@@ -50,71 +50,26 @@ def welcome():
     return (
         f"Available Routes:<br/>"
 """
-<ul data-sourcepos="75:1-103:0" dir="auto">
-<li data-sourcepos="75:1-80:0">
-<p data-sourcepos="75:3-75:5"><code>/</code></p>
-<ul data-sourcepos="77:3-80:0">
-<li data-sourcepos="77:3-78:0">
-<p data-sourcepos="77:5-77:14">Home page.</p>
-</li>
-<li data-sourcepos="79:3-80:0">
-<p data-sourcepos="79:5-79:39">List all routes that are available.</p>
-</li>
-</ul>
-</li>
-<li data-sourcepos="81:1-86:0">
-<p data-sourcepos="81:3-81:27"><code><a href="/api/v1.0/precipitation">/api/v1.0/precipitation</a></code></p>
-<ul data-sourcepos="83:3-86:0">
-<li data-sourcepos="83:3-84:0">
-<p data-sourcepos="83:5-83:94">Convert the query results to a dictionary using <code>date</code> as the key and <code>prcp</code> as the value.</p>
-</li>
-<li data-sourcepos="85:3-86:0">
-<p data-sourcepos="85:5-85:54">Return the JSON representation of your dictionary.</p>
-</li>
-</ul>
-</li>
-<li data-sourcepos="87:1-90:0">
-<p data-sourcepos="87:3-87:22"><code><a href="/api/v1.0/stations">/api/v1.0/stations</a></code></p>
-<ul data-sourcepos="89:3-90:0">
-<li data-sourcepos="89:3-90:0">Return a JSON list of stations from the dataset.</li>
-</ul>
-</li>
-<li data-sourcepos="91:1-95:0">
-<p data-sourcepos="91:3-91:18"><code><a href="/api/v1.0/tobs">/api/v1.0/tobs</a></code></p>
-<ul data-sourcepos="92:3-95:0">
-<li data-sourcepos="92:3-93:2">
-<p data-sourcepos="92:5-92:102">Query the dates and temperature observations of the most active station for the last year of data.</p>
-</li>
-<li data-sourcepos="94:3-95:0">
-<p data-sourcepos="94:5-94:80">Return a JSON list of temperature observations (TOBS) for the previous year.</p>
-</li>
-</ul>
-</li>
-<li data-sourcepos="96:1-103:0">
-<p data-sourcepos="96:3-96:51"><code><a href="/api/v1.0/2017-02-23">/api/v1.0/&lt;start&gt;</a></code>
-  and <code><a href="/api/v1.0/2017-02-23/2017-03-23">/api/v1.0/&lt;start&gt;/&lt;end&gt;</a></code></p>
-<ul data-sourcepos="98:3-103:0">
-<li data-sourcepos="98:3-99:0">
-<p data-sourcepos="98:5-98:137">Return a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start or start-end range.</p>
-</li>
-<li data-sourcepos="100:3-101:0">
-<p data-sourcepos="100:5-100:123">When given the start only, calculate <code>TMIN</code>, <code>TAVG</code>, and <code>TMAX</code> for all dates greater than and equal to the start date.</p>
-</li>
-<li data-sourcepos="102:3-103:0">
-<p data-sourcepos="102:5-102:135">When given the start and the end date, calculate the <code>TMIN</code>, <code>TAVG</code>, and <code>TMAX</code> for dates between the start and end date inclusive.</p>
-</li>
-</ul>
-</li>
+<ul>
+<li>/ Home [this] page.</li>
+<li><a href="/api/v1.0/precipitation">/api/v1.0/precipitation</a></li>
+<li><a href="/api/v1.0/stations">/api/v1.0/stations</a></li>
+<li><a href="/api/v1.0/tobs">/api/v1.0/tobs</a></li>
+<li><a href="/api/v1.0/2017-02-23">/api/v1.0/&lt;start&gt;</a></li>
+<li><a href="/api/v1.0/2017-02-23/2017-03-23">/api/v1.0/&lt;start&gt;/&lt;end&gt;</a></li>
 </ul>
 """
     )
 
 
+#Convert the query results to a dictionary using date as the key and prcp as the value.
+#Return the JSON representation of your dictionary.
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
+    # No date requirements in the assignment? OK. Otherwise could be done like tobs()
     results = session.query(Measurement.date, Measurement.prcp) \
         .filter(Measurement.station == default_station) \
         .order_by(Measurement.date) \
